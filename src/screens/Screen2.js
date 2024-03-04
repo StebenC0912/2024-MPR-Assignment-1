@@ -5,13 +5,12 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  Pressable,
 } from "react-native";
-export default function Screen1({navigation}) {
+export default function Screen2(props) {
   return (
     <SafeAreaView style={styles.bg}>
       <View style={styles.topView}>
-        <Text style={styles.textTop}>Need some help?</Text>
+        <Text style={styles.textTop}>Opponent's Guess</Text>
       </View>
       <View style={styles.bottomView}>
         <Text
@@ -34,26 +33,7 @@ export default function Screen1({navigation}) {
           placeholder="Enter a number from 1 to 100"
           keyboardType="numeric"
         />
-        <Pressable
-          style={StyleSheet.create({
-            backgroundColor: "#F09D5F",
-            padding: 10,
-            borderRadius: 25,
-            marginTop: 20,
-          })}
-          onPress={() => navigation.navigate("Screen2")}
-        >
-          <Text
-            style={StyleSheet.create({
-              color: "white",
-              textAlign: "center",
-              fontSize: 16,
-              fontWeight: "bold",
-            })}
-          >
-            Start game{" "}
-          </Text>
-        </Pressable>
+        
       </View>
     </SafeAreaView>
   );
@@ -67,11 +47,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(100,134,48)",
   },
   topView: {
-    height: 90,
+    paddingTop: 40,
+    height: 120,
     width: "100%",
     justifyContent: "center",
-    alignItems: "flex-end",
-    paddingRight: 30,
+    alignItems: "center",
   },
   bottomView: {
     flex: 1,
@@ -83,9 +63,12 @@ const styles = StyleSheet.create({
   },
   textTop: {
     color: "white",
-    fontSize: 13,
-    paddingTop: 10,
-    paddingRight: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    borderRadius: 25,
+    borderColor: "white",
+    borderWidth: 1,
+    padding: 15,
   },
   textBottom: {
     color: "black",
