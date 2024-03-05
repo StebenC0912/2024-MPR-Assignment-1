@@ -70,7 +70,7 @@ function Screen2(props) {
           style={{
             flexDirection: "column",
             justifyContent: "space-between",
-            borderColor: "black",
+            borderColor: "#F09D5F",
             borderWidth: 1,
             marginTop: 40,
             borderRadius: 15,
@@ -107,6 +107,7 @@ function Screen2(props) {
           </View>
         </View>
         <FlatList
+        style={{marginTop: 20}}
           data={data}
           renderItem={({ item }) =>
             ItemScoreComponent({ guess: item.name, key: item.key })
