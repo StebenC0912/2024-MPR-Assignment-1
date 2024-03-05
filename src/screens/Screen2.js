@@ -1,12 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  TextInput,
   View,
   SafeAreaView,
   StyleSheet,
   Text,
+  FlatList,
+  TouchableOpacity,
 } from "react-native";
-export default function Screen2(props) {
+import Ionicons from "react-native-vector-icons/Ionicons";
+import ItemScoreComponent from "../components/itemScoreComponent";
+import styles from "../constants/style";
+import { Alert } from "react-native";
+let max = 100;
+let min = 1;
+let currentGuess;
+let i = 0;
+let data = [{ name: currentGuess, key: i }];
+function Screen2(props) {
+  const userResult = props.route.params.number;
+  const [data, setData] = useState([]);
+  const [currentGuess, setCurrentGuess] = useState(randomInt(min, max));
+  if (currentGuess === userResult) {
+    Alert.alert("Congratulation!!!", "The number is " + currentGuess, [
+      {
+        text: "OK",
+        onPress: () => {
+          max = 100;
+          min = 1;
+          i = 0;
+          for (let i = data.length - 1; i >= 0; i--) {
+            data.pop();
+          }
+          props.navigation.navigate("Screen1");
+        },
+      },
+    ]);
+  }
+  const handleReload = () => {
+    setCurrentGuess(randomInt(min, max));
+    i++;
+    data.push({ name: currentGuess, key: i });
+    
+  };
   return (
     <SafeAreaView style={styles.bg}>
       <View style={styles.topView}>
@@ -15,74 +50,73 @@ export default function Screen2(props) {
       <View style={styles.bottomView}>
         <Text
           style={StyleSheet.create({
-            color: "black",
-            fontSize: 30,
+            color: "#F09D5F",
+            fontSize: 35,
             fontWeight: "bold",
             marginTop: 40,
+            alignSelf: "center",
+            borderRadius: 15,
+            borderColor: "#F09D5F",
+            borderWidth: 5,
+            paddingTop: 15,
+            paddingBottom: 15,
+            paddingLeft: 120,
+            paddingRight: 120,
           })}
         >
-          Let's play a game
+          {currentGuess}
         </Text>
-        <Text style={styles.textBottom}>
-          Welcome to the Number Guessing Game!
-          {"\n"}Insert your number and we will try to guess it.
-        </Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Enter a number from 1 to 100"
-          keyboardType="numeric"
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderColor: "black",
+            borderWidth: 1,
+            marginTop: 40,
+            borderRadius: 15,
+          }}
+        >
+          <Text style={styles.textBottom}>
+            Is the number higher or lower than {currentGuess}?
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              marginBottom: 20,
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                min = currentGuess;
+                handleReload();
+              }}
+            >
+              <Ionicons name="arrow-up" size={50} style={styles.button} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                max = currentGuess;
+                handleReload();
+              }}
+            >
+              <Ionicons name="arrow-down" size={50} style={styles.button} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <FlatList
+          data={data}
+          renderItem={({ item }) =>
+            ItemScoreComponent({ guess: item.name, key: item.key })
+          }
         />
-        
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  bg: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgb(100,134,48)",
-  },
-  topView: {
-    paddingTop: 40,
-    height: 120,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bottomView: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "white",
-    borderTopLeftRadius: 39,
-    borderTopRightRadius: 39,
-    padding: 30,
-  },
-  textTop: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
-    borderRadius: 25,
-    borderColor: "white",
-    borderWidth: 1,
-    padding: 15,
-  },
-  textBottom: {
-    color: "black",
-    fontSize: 16,
-    marginTop: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ECECF1",
-    borderRadius: 25,
-    padding: 10,
-    width: "100%",
-    fontSize: 16,
-    marginTop: 90,
-    backgroundColor: "#ECECF1",
-  },
-});
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+}
+export default Screen2;

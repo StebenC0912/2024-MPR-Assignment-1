@@ -1,4 +1,3 @@
-import React from "react";
 import {
   TextInput,
   View,
@@ -7,11 +6,24 @@ import {
   Text,
   Pressable,
 } from "react-native";
-export default function Screen1({navigation}) {
+import React, { useState, useRef } from "react";
+import styles from "../constants/style";
+export default function Screen1({ navigation }) {
+  const [number, setNumber] = useState("");
+  const numberInputRef = useRef(null);
+  const handleNumber = () => {
+    const parsedNumber = parseInt(number, 10);
+    if (isNaN(parsedNumber) || parsedNumber < 1 || parsedNumber > 100) {
+      alert("Please insert a number between 1 and 100");
+    } else {
+      numberInputRef.current.clear();
+      navigation.navigate("Screen2", { number: parsedNumber });
+    }
+  };
   return (
     <SafeAreaView style={styles.bg}>
-      <View style={styles.topView}>
-        <Text style={styles.textTop}>Need some help?</Text>
+      <View style={style.topView}>
+        <Text style={style.textTop}>Need some help?</Text>
       </View>
       <View style={styles.bottomView}>
         <Text
@@ -30,9 +42,11 @@ export default function Screen1({navigation}) {
         </Text>
 
         <TextInput
+          ref={numberInputRef}
           style={styles.input}
           placeholder="Enter a number from 1 to 100"
           keyboardType="numeric"
+          onChangeText={(e) => setNumber(e)}
         />
         <Pressable
           style={StyleSheet.create({
@@ -41,7 +55,7 @@ export default function Screen1({navigation}) {
             borderRadius: 25,
             marginTop: 20,
           })}
-          onPress={() => navigation.navigate("Screen2")}
+          onPress={handleNumber}
         >
           <Text
             style={StyleSheet.create({
@@ -59,13 +73,7 @@ export default function Screen1({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
-  bg: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgb(100,134,48)",
-  },
+const style = StyleSheet.create({
   topView: {
     height: 90,
     width: "100%",
@@ -86,20 +94,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingTop: 10,
     paddingRight: 10,
-  },
-  textBottom: {
-    color: "black",
-    fontSize: 16,
-    marginTop: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ECECF1",
-    borderRadius: 25,
-    padding: 10,
-    width: "100%",
-    fontSize: 16,
-    marginTop: 90,
-    backgroundColor: "#ECECF1",
   },
 });
