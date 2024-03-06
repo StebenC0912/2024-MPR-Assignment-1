@@ -14,6 +14,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  bottomViewCustom: {
+    flex: 1,
+    width: "100%",
+    borderTopLeftRadius: 39,
+    borderTopRightRadius: 39,
+    padding: 30,
+    alignItems: "center",
+    height: "100%",
+    justifyContent: "center",
+  },
   bottomView: {
     flex: 1,
     width: "100%",
@@ -55,6 +65,24 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 25,
     color: "white",
+  },
+  bigText: {
+    color: "black",
+    fontSize: 30,
+    fontWeight: "bold",
+    marginTop: 40,
+  },
+  textButton: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  startButton: {
+    backgroundColor: "#F09D5F",
+    padding: 10,
+    borderRadius: 25,
+    marginTop: 20,
   },
 });
 export default styles;

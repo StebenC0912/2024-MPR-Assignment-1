@@ -21,9 +21,21 @@ function Screen2(props) {
   const [data, setData] = useState([]);
   const [currentGuess, setCurrentGuess] = useState(randomInt(min, max));
   if (currentGuess === userResult) {
-    Alert.alert("Congratulation!!!", "The number is " + currentGuess, [
+    max = 100;
+    min = 1;
+    i = 0;
+    for (let i = data.length - 1; i >= 0; i--) {
+      data.pop();
+    }
+    props.navigation.navigate("Screen3", {
+      message: "You win!",
+      buttonContent: "Play again",
+    });
+  }
+  const handleAlert = (message) => {
+    Alert.alert("Are you sure?", message, [
       {
-        text: "OK",
+        text: "Yes",
         onPress: () => {
           max = 100;
           min = 1;
@@ -31,16 +43,19 @@ function Screen2(props) {
           for (let i = data.length - 1; i >= 0; i--) {
             data.pop();
           }
-          props.navigation.navigate("Screen1");
+          props.navigation.navigate("Screen3", {
+            message: "You lose!",
+            buttonContent: "Now you have to play it again. Told ya!",
+          });
         },
       },
+      { text: "No", onPress: () => console.log("No") },
     ]);
-  }
+  };
   const handleReload = () => {
     setCurrentGuess(randomInt(min, max));
     i++;
     data.push({ name: currentGuess, key: i });
-    
   };
   return (
     <SafeAreaView style={styles.bg}>
@@ -89,8 +104,14 @@ function Screen2(props) {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                min = currentGuess;
-                handleReload();
+                if (currentGuess > userResult) {
+                  handleAlert(
+                    "Are you sure the result is bigger than" + currentGuess
+                  );
+                } else {
+                  min = currentGuess;
+                  handleReload();
+                }
               }}
             >
               <Ionicons name="arrow-up" size={50} style={styles.button} />
@@ -98,8 +119,14 @@ function Screen2(props) {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                max = currentGuess;
-                handleReload();
+                if (currentGuess < userResult) {
+                  handleAlert(
+                    "Are you sure the result is smaller than" + currentGuess
+                  );
+                } else {
+                  max = currentGuess;
+                  handleReload();
+                }
               }}
             >
               <Ionicons name="arrow-down" size={50} style={styles.button} />
@@ -107,7 +134,7 @@ function Screen2(props) {
           </View>
         </View>
         <FlatList
-        style={{marginTop: 20}}
+          style={{ marginTop: 20 }}
           data={data}
           renderItem={({ item }) =>
             ItemScoreComponent({ guess: item.name, key: item.key })
@@ -117,6 +144,7 @@ function Screen2(props) {
     </SafeAreaView>
   );
 }
+
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min - 1)) + min + 1;
 }

@@ -27,12 +27,7 @@ export default function Screen1({ navigation }) {
       </View>
       <View style={styles.bottomView}>
         <Text
-          style={StyleSheet.create({
-            color: "black",
-            fontSize: 30,
-            fontWeight: "bold",
-            marginTop: 40,
-          })}
+          style={styles.bigText}
         >
           Let's play a game
         </Text>
@@ -49,21 +44,11 @@ export default function Screen1({ navigation }) {
           onChangeText={(e) => setNumber(e)}
         />
         <Pressable
-          style={StyleSheet.create({
-            backgroundColor: "#F09D5F",
-            padding: 10,
-            borderRadius: 25,
-            marginTop: 20,
-          })}
+          style={styles.startButton}
           onPress={handleNumber}
         >
           <Text
-            style={StyleSheet.create({
-              color: "white",
-              textAlign: "center",
-              fontSize: 16,
-              fontWeight: "bold",
-            })}
+            style={styles.textButton}
           >
             Start game{" "}
           </Text>
